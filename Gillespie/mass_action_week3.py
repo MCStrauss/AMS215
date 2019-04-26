@@ -20,7 +20,7 @@ args = parser.parse_args()
 r1 = 1.0; finish = 100
 
 # start concentration for x1, x2, and x5
-x1 = 50; x2 = 100; x5 = 1
+# x1 = 5; x2 = 8; x5 = 1
 
 def get_args():
     if args.reaction:
@@ -28,21 +28,34 @@ def get_args():
     if args.finish:
         finish = args.finish
 
-def stimulate(finish, rr, x1 = 50, x2 = 100, x5 = 1):
+def stimulate(finish, rr, x1 = 5, x2 = 8, x5 = 1):
     # x1 mass reaction
-    #  dx1/dt = -r1[x1][x2] + r1[x5]
+    # dx1/dt = -r1[x1][x2] + r1[x5]
+
     start = 0
     change_x1 = []
     while start < finish:
+
         rR = bool(random.getrandbits(1))
 
         if rR:
-            dx1 = -rr * x1 * x2
-        else:
-            dx1 = rr * x5
 
-        x1 += x1 + dx1
-        change_x1.append((start , x1)) # change is a list with tuple of time and change in x1
+            #x1 -= 1; x2 -= 1
+            #x5 += 1
+            dx1 = -rr * x1 * x2
+            x1 += dx1
+
+        else:
+
+            #x1 +=1 ; x2 += 1
+            #x5 -= 1
+
+            dx1 = rr * x5
+            x1 += dx1
+
+
+
+        change_x1.append((start, x1)) # change is a list with tuple of time and change in x1
         start += 1
 
     return change_x1
@@ -52,13 +65,21 @@ def stimulate(finish, rr, x1 = 50, x2 = 100, x5 = 1):
 def main():
 
     get_args() # grabs argparse args
+
     data = stimulate(finish, r1)
 
     fig = plt.figure()  # set up plot
 
-    plt.axis([0, finish, 0, 10])
+    #plt.axis([0, finish, -10, 10]) #x-min, x-max, y-min, y-max
     plt.xlabel('time')
     plt.ylabel('X')
+
+    for time in range(finish):
+        print(time, data[time][1])
+        plt.scatter(time, data[time][1],
+                s=1, c='black')
+
+    plt.savefig("mass_action.png")  # save plot to disk
 
 
 
