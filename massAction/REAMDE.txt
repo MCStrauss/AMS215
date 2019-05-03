@@ -1,0 +1,31 @@
+KEY:
+x2 = repressor
+x2* = inactivated repressor
+x3 = IPTG
+x4 = free promoter
+x4* = bound promoter
+x6 = mRNA
+
+EQUATIONS:
+
+ASSUMED QSSA
+dx2/dt = -r1 [x2][x4] + r2[x4*] - r2 [x2][x3] + r4[x2*] change in repressor
+
+dx2*/dt = r3[x2][x3] - r4[x2*] change in inactivated repressor
+
+dx3/dt = -r3[x2][x3] + r4[x2*] change in IPTG (makes repressor inactived)
+
+ASSUMED QSSA
+dx4/dt = -r1[x2][x4] + r2[x4*] change in free promoter
+
+dx4*/dt = r1[x2][x4] - r2[x4*] change in bound promoter
+
+dx6/dt = r5[x4] - r6[x6] change mRNA
+
+SOLVING QSSA:
+
+[X2] = [X2]total - [X2*]
+
+[X2*] = -r2[X2]total * [X3] / r4 -r2[X3]
+
+[X4] = r2 [X4]total / r1[X2] + r2
