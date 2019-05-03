@@ -47,7 +47,7 @@ def stimulate_original_mass_action(finish:int, rr:float, x1 = .25, x2 = .25, x5 
             dx1 = rr * x5
             x1 += dx1
 
-        change_x1.append((start, x1)) # change is a list with tuple of time and change in x1
+        change_x1.append(x1)
         start += .1
     return change_x1
 
@@ -57,20 +57,14 @@ def stimulate_QSSA():
 
 
 def main():
-
-    get_args() # grabs argparse args
+    get_args()
 
     data = stimulate_original_mass_action(finish, r1)
 
-    fig = plt.figure()  # set up plot
+    fig, ax = plt.subplots()
+    ax.set(xlabel='time', ylabel='[x1]')
+    ax.plot(data)
+    fig.savefig("mass_action.png")
 
-    plt.xlabel('time')
-    plt.ylabel('X')
-
-    for time, value in data:
-        plt.scatter(time, value,
-                s=1, c='black')
-
-    plt.savefig("mass_action.png")  # save plot to disk
 if __name__ == '__main__':
     main()
